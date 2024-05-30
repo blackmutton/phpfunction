@@ -41,6 +41,29 @@ function find($table, $arg)
     return $row;
 }
 
+function update($table, $cols, $arg)
+{
+    global $pdo;
+
+    $sql = "UPDATE `{$table}` SET ";
+
+    foreach ($cols as $key => $value) {
+        $tmp[] = "`$key` ='{$value}'";
+    }
+
+    $sql .= join(",", $tmp);
+
+    if (is_array($arg)) {
+        foreach ($arg as $key => $value) {
+            $tmp[] = "`$key`='{$value}'";
+        }
+        $sql .= "WHERE" . join("&&", $tmp);
+    } else {
+        $sql .= " WHERE `id` ='{$arg}'";
+    }
+
+    return $pdo->exec($sql);
+}
 
 /* 
 * 在頁面上快速顯示陣列內容
