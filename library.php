@@ -74,4 +74,13 @@ function star($shape = '正三角形', $n = 7)
     }
 }
 
+echo sum(10,25);
+
+function sum(...$args){
+    $sum=0;
+    foreach($args as $arg){
+        $sum+=$arg;
+    }
+    return $sum;
+}
 ?>
