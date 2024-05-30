@@ -1,14 +1,25 @@
 <?php
 $dsn = "mysql:host=localhost;charset=utf8;dbname=school";
 $pdo = new PDO($dsn, 'root', '');
-function all()
+/* 
+在指定資料表中查找特定位置資料
+@param $table 資料表名稱
+@param $where where語法
+*/
+function all($table,$where)
 {
     global $pdo;
 
-    $sql = "SELECT * FROM `dept`";
+    $sql = "SELECT * FROM `{$table}` {$where}";
     $rows = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     return $rows;
 }
+
+/* 
+在dept資料表中查找特定id資料
+@param $id dept資料表中的id
+
+*/
 function find($id)
 {
     global $pdo;
