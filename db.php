@@ -2,11 +2,11 @@
 $dsn = "mysql:host=localhost;charset=utf8;dbname=school";
 $pdo = new PDO($dsn, 'root', '');
 /* 
-在指定資料表中查找特定位置資料
-@param $table 資料表名稱
-@param $where where語法
+* 在指定資料表中查找特定位置資料
+* @param $table 資料表名稱
+* @param $where where語法
 */
-function all($table,$where)
+function all($table, $where)
 {
     global $pdo;
 
@@ -16,24 +16,36 @@ function all($table,$where)
 }
 
 /* 
-在dept資料表中查找特定id資料
-@param $id dept資料表中的id
+* 在指定資料表中查找特定條件資料
+* @param $table 指定資料表名稱
+* @param $arg 想要的指定條件(可以是陣列形式或id的整數形式)
 
 */
-function find($id)
+function find($table, $arg)
 {
     global $pdo;
+    $sql = "SELECT * FROM `{$table}` WHERE ";
 
-    $sql = "SELECT * FROM `dept` WHERE `id` ='{$id}'";
-    $rows = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-    return $rows;
+    if (is_array($arg)) {
+        foreach ($arg as $key => $value) {
+            $tmp[] = "`$key`= '{$value}'";
+            // print_r($tmp);
+        }
+        $sql .= join(" && ", $tmp);
+    } else {
+
+        $sql .= "`id` ='{$arg}'";
+    }
+    echo $sql;
+    $row = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    return $row;
 }
 
 
 /* 
-在頁面上快速顯示陣列內容
-direct dump
-@param $array 輸入的參數須為陣列 
+* 在頁面上快速顯示陣列內容
+* direct dump
+* @param $array 輸入的參數須為陣列 
 */
 
 function dd($array)
