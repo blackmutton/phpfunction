@@ -8,9 +8,9 @@
 
 
 /* 
-在頁面上快速顯示陣列內容
-direct dump
-@param $array 輸入的參數須為陣列 
+* 在頁面上快速顯示陣列內容
+* direct dump
+* @param $array 輸入的參數須為陣列 
 */
 
 function dd($array)
@@ -25,9 +25,9 @@ function dd($array)
     }
 }
 /* 
-    使用迴圈來畫星星
-  @param $shape 形狀名,字串
-  @param $stars 星星的大小,數值
+* 使用迴圈來畫星星
+*  @param $shape 形狀名,字串
+*  @param $stars 星星的大小,數值
 */
 
 function star($shape = '正三角形', $n = 7)
