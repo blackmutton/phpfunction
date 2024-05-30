@@ -1,8 +1,33 @@
 <?php
 $dsn = "mysql:host=localhost;charset=utf8;dbname=school";
 $pdo = new PDO($dsn, 'root', '');
+
+// 將函式中的foreach進行簡化
+function array2sql($array)
+{
+    foreach ($array as $key => $value) {
+        $tmp[] = "`$key`='$value'";
+    }
+    return $tmp;
+}
+
+
 /**
- * 在指定資料表中查找特定位置資料
+ * 將update和insert結合起來
+ *  @param string $table 資料表名稱
+ *  @param mixed $array 條件參數
+ **/
+function save($table, $array)
+{
+    if (isset($array['id'])) {
+        update($table, $array, $array['id']);
+    } else {
+        insert($table, $array);
+    }
+}
+
+/**
+ * 在指定資料表中利用where語法查找特定位置資料
  * @param $table 資料表名稱
  * @param $where where語法
  **/
@@ -27,10 +52,7 @@ function find($table, $arg)
     $sql = "SELECT * FROM `{$table}` WHERE ";
 
     if (is_array($arg)) {
-        foreach ($arg as $key => $value) {
-            $tmp[] = "`$key`= '{$value}'";
-            // print_r($tmp);
-        }
+        $tmp = array2sql($arg);
         $sql .= join(" && ", $tmp);
     } else {
 
@@ -52,16 +74,12 @@ function update($table, $cols, $arg)
 
     $sql = "UPDATE `{$table}` SET ";
 
-    foreach ($cols as $key => $value) {
-        $tmp[] = "`$key` ='{$value}'";
-    }
+    $tmp = array2sql($cols);
 
     $sql .= join(",", $tmp);
 
     if (is_array($arg)) {
-        foreach ($arg as $key => $value) {
-            $tt[] = "`$key`='{$value}'";
-        }
+        $tt = array2sql($arg);
         $sql .= " WHERE" . join("&&", $tt);
     } else {
         $sql .= " WHERE `id` ='{$arg}'";
@@ -99,9 +117,7 @@ function del($table, $arg)
 
     $sql = "DELETE FROM `{$table}` WHERE ";
     if (is_array($arg)) {
-        foreach ($arg as $key => $value) {
-            $tmp[] = "`$key`='{$value}'";
-        }
+        $tmp = array2sql($arg);
         $sql .= join(" && ", $tmp);
     } else {
         $sql .= " `id`='{$arg}'";
@@ -127,4 +143,14 @@ function dd($array)
     } else {
         echo "錯誤：函式dd()參數須為陣列";
     }
+}
+
+/** 
+ *在使用更複雜語法時可使用的萬用函式
+ *@param $sql sql語法
+ **/
+function q($sql)
+{
+    global $pdo;
+    return $pdo->query($sql)->fetchAll();
 }

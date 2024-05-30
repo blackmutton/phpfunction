@@ -19,6 +19,8 @@
     // insert('dept', ['code' => '801', 'name' => '綜合演藝學系']);
     del('dept', ['name' => '綜合演藝學系']);
     update('students', ['dept' => '2'], ['dept' => '1']);
+    // limit需要放最後，否則會錯誤
+    dd(q("select * from `students` where `dept`='3'  order by `id` desc limit 10"));
 
     ?>
 </body>
