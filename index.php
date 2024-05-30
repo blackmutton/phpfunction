@@ -18,6 +18,7 @@
     update('students', ['dept' => '3'], 3);
     // insert('dept', ['code' => '801', 'name' => '綜合演藝學系']);
     del('dept', ['name' => '綜合演藝學系']);
+    update('students', ['dept' => '2'], ['dept' => '1']);
 
     ?>
 </body>

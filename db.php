@@ -43,9 +43,8 @@ function find($table, $arg)
 /**
  * 更新資料表中的資料
  * @param string $table 資料表名稱
- * @param array $cols 欄位名稱和對應的值
+ * @param array $cols 想調整成的結果
  * @param mixed $arg 條件參數，可以是陣列或單一值
- * @return int 返回受影響的行數
  */
 function update($table, $cols, $arg)
 {
@@ -63,7 +62,7 @@ function update($table, $cols, $arg)
         foreach ($arg as $key => $value) {
             $tt[] = "`$key`='{$value}'";
         }
-        $sql .= "WHERE" . join("&&", $tt);
+        $sql .= " WHERE" . join("&&", $tt);
     } else {
         $sql .= " WHERE `id` ='{$arg}'";
     }
