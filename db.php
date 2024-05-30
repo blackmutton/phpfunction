@@ -1,11 +1,11 @@
 <?php
 $dsn = "mysql:host=localhost;charset=utf8;dbname=school";
 $pdo = new PDO($dsn, 'root', '');
-/* 
-* 在指定資料表中查找特定位置資料
-* @param $table 資料表名稱
-* @param $where where語法
-*/
+/**
+ * 在指定資料表中查找特定位置資料
+ * @param $table 資料表名稱
+ * @param $where where語法
+ **/
 function all($table, $where)
 {
     global $pdo;
@@ -15,12 +15,12 @@ function all($table, $where)
     return $rows;
 }
 
-/* 
-* 在指定資料表中查找特定條件資料
-* @param $table 指定資料表名稱
-* @param $arg 想要的指定條件(可以是陣列形式或id的整數形式)
+/** 
+ * 在指定資料表中查找特定條件資料
+ * @param $table 指定資料表名稱
+ * @param $arg 想要的指定條件(可以是陣列形式或id的整數形式)
 
-*/
+ **/
 function find($table, $arg)
 {
     global $pdo;
@@ -40,7 +40,13 @@ function find($table, $arg)
     $row = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     return $row;
 }
-
+/**
+ * 更新資料表中的資料
+ * @param string $table 資料表名稱
+ * @param array $cols 欄位名稱和對應的值
+ * @param mixed $arg 條件參數，可以是陣列或單一值
+ * @return int 返回受影響的行數
+ */
 function update($table, $cols, $arg)
 {
     global $pdo;
@@ -65,11 +71,11 @@ function update($table, $cols, $arg)
     return $pdo->exec($sql);
 }
 
-/* 
-* 在頁面上快速顯示陣列內容
-* direct dump
-* @param $array 輸入的參數須為陣列 
-*/
+/** 
+ * 在頁面上快速顯示陣列內容
+ * direct dump
+ * @param array $array 輸入的參數須為陣列 
+ **/
 
 function dd($array)
 {
