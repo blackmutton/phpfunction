@@ -71,6 +71,20 @@ function update($table, $cols, $arg)
     return $pdo->exec($sql);
 }
 
+function insert($table, $cols)
+{
+    global $pdo;
+    $sql = "INSERT INTO`{$table}` ";
+    $sql .= "(`" . join("`,`", array_keys($cols)) . "`)";
+    $sql .= " VALUES('" . join("','", $cols) . "')";
+
+    // echo $sql;
+    return $pdo->exec($sql);
+}
+
+
+
+
 /** 
  * 在頁面上快速顯示陣列內容
  * direct dump

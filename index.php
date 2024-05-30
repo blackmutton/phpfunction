@@ -15,6 +15,7 @@
     dd(all("students", "WHERE `id`>5 && `id`<10"));
     dd(find("students", ['uni_id' => 'F200000035']));
     dd(find("students", ['uni_id' => 'F200000035', 'parents' => '孔進豐']));
+    insert('dept', ['code' => '801', 'name' => '綜合演藝學系']);
 
     ?>
 </body>
