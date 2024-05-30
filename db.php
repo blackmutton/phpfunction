@@ -61,20 +61,27 @@ function update($table, $cols, $arg)
 
     if (is_array($arg)) {
         foreach ($arg as $key => $value) {
-            $tmp[] = "`$key`='{$value}'";
+            $tt[] = "`$key`='{$value}'";
         }
-        $sql .= "WHERE" . join("&&", $tmp);
+        $sql .= "WHERE" . join("&&", $tt);
     } else {
         $sql .= " WHERE `id` ='{$arg}'";
     }
+    // echo $sql;
 
     return $pdo->exec($sql);
 }
 
+/**
+ * 插入指定資料表新資料
+ * @param string $table 資料表名稱
+ * @param array $cols 欄位名稱和對應的值
+ */
 function insert($table, $cols)
 {
     global $pdo;
     $sql = "INSERT INTO`{$table}` ";
+    // array_keys()取得陣列key值，使用在二為陣列很方便
     $sql .= "(`" . join("`,`", array_keys($cols)) . "`)";
     $sql .= " VALUES('" . join("','", $cols) . "')";
 
@@ -82,7 +89,27 @@ function insert($table, $cols)
     return $pdo->exec($sql);
 }
 
+/** 
+ * 刪除指定資料庫的資料
+ * @param string $table 資料表名稱
+ * @param mixed $arg 想要刪除的資料條件，可為整數的id或陣列條件 
+ **/
+function del($table, $arg)
+{
+    global $pdo;
 
+    $sql = "DELETE FROM `{$table}` WHERE ";
+    if (is_array($arg)) {
+        foreach ($arg as $key => $value) {
+            $tmp[] = "`$key`='{$value}'";
+        }
+        $sql .= join(" && ", $tmp);
+    } else {
+        $sql .= " `id`='{$arg}'";
+    }
+    echo $sql;
+    return $pdo->exec($sql);
+}
 
 
 /** 
