@@ -59,7 +59,7 @@ function find($table, $arg)
         $sql .= "`id` ='{$arg}'";
     }
     echo $sql;
-    $row = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    $row = $pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
     return $row;
 }
 /**
