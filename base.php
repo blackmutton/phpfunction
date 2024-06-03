@@ -24,7 +24,7 @@ class DB
         } */
         $sql = $this->select($sql, ...$arg);
 
-        echo $sql;
+        // echo $sql;
         return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -40,7 +40,7 @@ class DB
 
             $sql .= "`id` ='{$arg}'";
         }
-        echo $sql;
+        // echo $sql;
         return $this->pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
     }
 
@@ -57,7 +57,7 @@ class DB
             $sql .= "(`" . join("`,`", array_keys($array)) . "`)";
             $sql .= " VALUES('" . join("','", $array) . "')";
         }
-        echo $sql;
+        // echo $sql;
         return $this->pdo->exec($sql);
     }
 
@@ -86,7 +86,7 @@ class DB
             $sql = $sql . $arg[1];
         } */
         $sql = $this->select($sql, ...$arg);
-        echo $sql;
+        // echo $sql;
         return $this->pdo->query($sql)->fetchColumn();
     }
 
@@ -95,7 +95,7 @@ class DB
         $sql = "SELECT $math(`$col`) FROM (`$this->table`)";
         $sql = $this->select($sql, ...$arg);
 
-        echo $sql;
+        // echo $sql;
         return $this->pdo->query($sql)->fetchColumn();
     }
     protected function array2sql($array)
@@ -111,7 +111,7 @@ class DB
         if (!empty($arg[0]) && is_array($arg[0])) {
             $tmp = $this->array2sql($arg[0]);
             $sql = $sql . "where" . implode(" && ", $tmp);
-        }
+        } 
         if (!empty($arg[1])) {
             $sql = $sql . $arg[1];
         }
@@ -134,7 +134,7 @@ $Student = new DB('students');
 $Dept = new DB('dept');
 // $Dept->save(['code' => '901', 'name' => '資工系']);
 // $Dept->del(16);
-$data = ['code' => 801, 'name' => '電子系'];
+/* $data = ['code' => 801, 'name' => '電子系'];
 $Dept->save($data);
 echo "<pre>";
 print_r($Student->find(['name' => '王琇榆']));
@@ -143,3 +143,4 @@ echo "</pre>";
 echo $Student->count(['dept' => 2], ' order by `name` desc');
 echo "<br>";
 echo $Student->math('max', 'graduate_at');
+ */
