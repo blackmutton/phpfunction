@@ -15,13 +15,14 @@ class DB
     public function all(...$arg)
     {
         $sql = "select * from $this->table ";
-        if (!empty($arg[0]) && is_array($arg[0])) {
+        /* if (!empty($arg[0]) && is_array($arg[0])) {
             $tmp = $this->array2sql($arg);
             $sql = $sql . "where " . implode("&&", $tmp);
         }
         if (!empty($arg[1])) {
             $sql = $sql . $arg[1];
-        }
+        } */
+        $sql = $this->select($sql, ...$arg);
 
         echo $sql;
         return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
@@ -71,12 +72,50 @@ class DB
         }
         return $this->pdo->exec($sql);
     }
+    function count(...$arg)
+    {
+
+        $sql = "SELECT count(*) FROM `{$this->table}`";
+        // 第一個參數限定為陣列
+        /* if (!empty($arg[0]) && is_array($arg[0])) {
+            $tmp = $this->array2sql($arg[0]);
+            $sql = $sql . "where" . implode("&&", $tmp);
+        } */
+        // 最多只能有2個參數
+        /*  if (!empty($arg[1])) {
+            $sql = $sql . $arg[1];
+        } */
+        $sql = $this->select($sql, ...$arg);
+        echo $sql;
+        return $this->pdo->query($sql)->fetchColumn();
+    }
+
+    function math($math, $col, ...$arg)
+    {
+        $sql = "SELECT $math(`$col`) FROM (`$this->table`)";
+        $sql = $this->select($sql, ...$arg);
+
+        echo $sql;
+        return $this->pdo->query($sql)->fetchColumn();
+    }
     protected function array2sql($array)
     {
         foreach ($array as $key => $value) {
             $tmp[] = "`$key`='$value'";
         }
         return $tmp;
+    }
+
+    protected function select($sql, ...$arg)
+    {
+        if (!empty($arg[0]) && is_array($arg[0])) {
+            $tmp = $this->array2sql($arg[0]);
+            $sql = $sql . "where" . implode(" && ", $tmp);
+        }
+        if (!empty($arg[1])) {
+            $sql = $sql . $arg[1];
+        }
+        return $sql;
     }
 
     function q($sql)
@@ -94,7 +133,13 @@ function dd($array)
 $Student = new DB('students');
 $Dept = new DB('dept');
 // $Dept->save(['code' => '901', 'name' => '資工系']);
-$Dept->del(16);
+// $Dept->del(16);
+$data = ['code' => 801, 'name' => '電子系'];
+$Dept->save($data);
 echo "<pre>";
 print_r($Student->find(['name' => '王琇榆']));
 echo "</pre>";
+
+echo $Student->count(['dept' => 2], ' order by `name` desc');
+echo "<br>";
+echo $Student->math('max', 'graduate_at');
