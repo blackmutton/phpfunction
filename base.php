@@ -36,7 +36,7 @@ class DB
         $sql = "SELECT * FROM `{$this->table}` WHERE ";
 
         if (is_array($arg)) {
-            $tmp = array2sql($arg);
+            $tmp = $this->array2sql($arg);
             $sql .= join(" && ", $tmp);
         } else {
 
@@ -56,5 +56,5 @@ class DB
 }
 $Student = new DB('students');
 echo "<pre>";
-print_r($Student->find('11'));
+print_r($Student->find(['name' => '王琇榆']));
 echo "</pre>";
